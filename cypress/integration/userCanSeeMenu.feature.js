@@ -1,13 +1,16 @@
-/// <reference types="Cypress" />
-
 describe('user views menus', () => {
-  beforeEach(() => {
+  before(function() {
     cy.server();
     cy.route({
-      method:'POST', url: 'http://localhost:3000/api/products', response: 'fixture: ProductData.json'
-    });
-    cy.visit("/");
+      method:'POST',
+      url: 'http://localhost:3000/api/products', 
+      response: 'fixture:productdata.json'
+    }) 
+    cy.visit("http://localhost:3001")   
   })
+
+
+
   it('successfully', () => {
     cy.get('#index').within(() => {
       cy.contains('Spaghetti and Meatballs')

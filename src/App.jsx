@@ -1,5 +1,5 @@
 import React from 'react';
-import {getData} from '../modules/productData';
+// import {getData} from '../modules/productData';
 
 
 //let menuTableIndex;
@@ -14,8 +14,7 @@ class App extends Component {
   return (
     <>
       <h1>Slowfood</h1>
-      <div>{getData()}</div>
-      
+      {productDataIndex}
     </>
   );
 }

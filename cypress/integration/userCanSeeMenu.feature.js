@@ -2,6 +2,10 @@
 
 describe('user views menus', () => {
   beforeEach(() => {
+    cy.server();
+    cy.route({
+      method:'POST', url: 'http://localhost:3000/api/products', response: 'fixture: ProductData.json'
+    });
     cy.visit("/");
   })
   it('successfully', () => {

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import DisplayProductData from './components/DisplayProductData';
-import {getData} from './modules/productData';
+//import {getData} from './modules/productData';
 
 
 //let menuTableIndex;

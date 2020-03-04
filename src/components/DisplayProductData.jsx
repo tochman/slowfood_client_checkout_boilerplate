@@ -21,16 +21,16 @@ class DisplayProductData extends Component {
     
     if (this.state.productData != null) {
       dataIndex = (
-        <div >
+        <div  id="index">
           {this.state.productData.map(item => {
-            return <div key={item.id}>{item.data.name}{item.data.description}{item.data.price}</div>
+            return <div key={item.id}>{item.name}{item.description}{item.price}</div>
           })}
         </div>
       )
     }
 
     return (
-      <div id="index">
+      <div>
         {dataIndex}
       </div>
     )

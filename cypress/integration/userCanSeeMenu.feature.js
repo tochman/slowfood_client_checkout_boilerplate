@@ -10,7 +10,7 @@ describe('user views menus', () => {
 			cy.route({
 				method: 'GET',
 				url: 'http://localhost:3000/api/products',
-				response: 'fixture:productdata.json'
+				response: 'fixture:product_data.json'
 			})
 		})
 

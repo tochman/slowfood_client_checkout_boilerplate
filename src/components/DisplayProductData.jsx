@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { getData } from "../modules/productData";
 import axios from "axios";
+import PaymentForm from './PaymentForm'
+
 class DisplayProductData extends Component {
   state = {
     productData: [],
@@ -8,6 +10,7 @@ class DisplayProductData extends Component {
     orderDetails: {},
     showOrder: false,
     orderTotal: "",
+    showPaymentform: false,
   };
   componentDidMount() {
     this.getProductData();
@@ -107,7 +110,14 @@ class DisplayProductData extends Component {
               To pay:{" "}
               {this.state.orderDetails.order_total || this.state.orderTotal} kr
             </p>
-            <button onClick={this.finalizeOrder.bind(this)}>Confirm!</button>
+            <button onClick={() => this.setState({ showPaymentform: true })}>
+              Confirm!
+            </button>
+            {this.state.showPaymentform && (
+              <div id="payment-form">
+                <PaymentForm />
+              </div>
+            )}
           </>
         )}
         {dataIndex}

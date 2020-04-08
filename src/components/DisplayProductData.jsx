@@ -7,6 +7,7 @@ class DisplayProductData extends Component {
     message: {},
     orderDetails: {},
     showOrder: false,
+    orderTotal: "",
   };
   componentDidMount() {
     this.getProductData();
@@ -15,10 +16,27 @@ class DisplayProductData extends Component {
     let result = await getData();
     this.setState({ productData: result.data.products });
   }
+
+  async finalizeOrder() {
+    let orderTotal = this.state.orderDetails.order_total;
+    let result = await axios.put(
+      `http://localhost:3000/api/orders/${this.state.orderDetails.id}`,
+      { activity: "finalize" }
+    );
+    this.setState({
+      message: { id: 0, message: result.data.message },
+      orderTotal: orderTotal,
+      orderDetails: {},
+    });
+  }
+
   async addToOrder(event) {
     let id = event.target.parentElement.dataset.id;
     let result;
-    if (this.state.orderDetails.hasOwnProperty("id")) {
+    if (
+      this.state.orderDetails.hasOwnProperty("id") &&
+      this.state.orderDetails.finalized === false
+    ) {
       result = await axios.put(
         `http://localhost:3000/api/orders/${this.state.orderDetails.id}`,
         { product_id: id }
@@ -28,10 +46,10 @@ class DisplayProductData extends Component {
         product_id: id,
       });
     }
-   this.setState({
-     message: { id: id, message: result.data.message },
-     orderDetails: result.data.order,
-   });
+    this.setState({
+      message: { id: id, message: result.data.message },
+      orderDetails: result.data.order,
+    });
   }
 
   render() {
@@ -50,7 +68,7 @@ class DisplayProductData extends Component {
                 data-id={item.id}
                 data-price={item.price}
               >
-                {`${item.name} ${item.description} ${item.price}`}
+                {`${item.name} ${item.description} - ${item.price}kr `}
                 <button onClick={this.addToOrder.bind(this)}>
                   Add to order
                 </button>
@@ -65,13 +83,16 @@ class DisplayProductData extends Component {
     }
     if (this.state.orderDetails.hasOwnProperty("products")) {
       orderDetailsDisplay = this.state.orderDetails.products.map((item) => {
-				return <li key={item.name}>{`${item.amount} x ${item.name}`}</li>;
+        return <li key={item.name}>{`${item.amount} x ${item.name}`}</li>;
       });
     } else {
       orderDetailsDisplay = "Nothing to see";
     }
     return (
       <>
+        {this.state.message.id === 0 && (
+          <h2 className="message">{this.state.message.message}</h2>
+        )}
         {this.state.orderDetails.hasOwnProperty("products") && (
           <button
             onClick={() => this.setState({ showOrder: !this.state.showOrder })}
@@ -82,7 +103,11 @@ class DisplayProductData extends Component {
         {this.state.showOrder && (
           <>
             <ul id="order-details">{orderDetailsDisplay}</ul>
-            <p>To pay: {this.state.orderDetails.order_total}</p>
+            <p>
+              To pay:{" "}
+              {this.state.orderDetails.order_total || this.state.orderTotal} kr
+            </p>
+            <button onClick={this.finalizeOrder.bind(this)}>Confirm!</button>
           </>
         )}
         {dataIndex}

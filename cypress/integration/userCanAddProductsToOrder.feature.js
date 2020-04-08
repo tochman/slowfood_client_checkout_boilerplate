@@ -1,29 +1,23 @@
 describe("User can add a product to his/her order", () => {
-  beforeEach(() => {
-    cy.server();
-    cy.route({
-      method: "GET",
-      url: "http://localhost:3000/api/products",
-      response: "fixture:product_data.json",
+    beforeEach(() => {
+      cy.server();
+      cy.route({
+        method: "GET",
+        url: "http://localhost:3000/api/products",
+        response: "fixture:product_data.json",
+      });
+      cy.route({
+        method: "POST",
+        url: "http://localhost:3000/api/orders",
+        response: "fixture:post_response.json",
+      });
+      cy.route({
+        method: "PUT",
+        url: "http://localhost:3000/api/orders/1",
+        response: "fixture:put_response.json",
+      });
+      cy.visit("http://localhost:3001");
     });
-    cy.route({
-      method: "POST",
-      url: "http://localhost:3000/api/orders",
-      response: {
-        message: "The product has been added to your order",
-        order_id: 1,
-      },
-    });
-    cy.route({
-      method: "PUT",
-      url: "http://localhost:3000/api/orders/1",
-      response: {
-        message: "The product has been added to your order",
-        order_id: 1,
-      },
-    });
-    cy.visit("http://localhost:3001");
-  });
 
   it("user get a confirmation message when adding product to order", () => {
     cy.get("#product-2").within(() => {

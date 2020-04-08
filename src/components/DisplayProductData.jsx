@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { getData } from "../modules/productData";
+import PaymentForm from "./PaymentForm";
+import { Elements } from "react-stripe-elements";
 import axios from "axios";
-import PaymentForm from './PaymentForm'
 
 class DisplayProductData extends Component {
   state = {
@@ -9,9 +10,10 @@ class DisplayProductData extends Component {
     message: {},
     orderDetails: {},
     showOrder: false,
+    showPaymentForm: false,
     orderTotal: "",
-    showPaymentform: false,
   };
+
   componentDidMount() {
     this.getProductData();
   }
@@ -20,16 +22,13 @@ class DisplayProductData extends Component {
     this.setState({ productData: result.data.products });
   }
 
-  async finalizeOrder() {
+  async finalizeOrder(message) {
     let orderTotal = this.state.orderDetails.order_total;
-    let result = await axios.put(
-      `http://localhost:3000/api/orders/${this.state.orderDetails.id}`,
-      { activity: "finalize" }
-    );
     this.setState({
-      message: { id: 0, message: result.data.message },
+      message: { id: 0, message: message },
       orderTotal: orderTotal,
       orderDetails: {},
+      showPaymentForm: false,
     });
   }
 
@@ -88,14 +87,15 @@ class DisplayProductData extends Component {
       orderDetailsDisplay = this.state.orderDetails.products.map((item) => {
         return <li key={item.name}>{`${item.amount} x ${item.name}`}</li>;
       });
-    } else {
-      orderDetailsDisplay = "Nothing to see";
     }
+
+
     return (
       <>
         {this.state.message.id === 0 && (
           <h2 className="message">{this.state.message.message}</h2>
         )}
+
         {this.state.orderDetails.hasOwnProperty("products") && (
           <button
             onClick={() => this.setState({ showOrder: !this.state.showOrder })}
@@ -103,19 +103,25 @@ class DisplayProductData extends Component {
             View order
           </button>
         )}
+        
         {this.state.showOrder && (
           <>
             <ul id="order-details">{orderDetailsDisplay}</ul>
             <p>
-              To pay:{" "}
+              To pay:
               {this.state.orderDetails.order_total || this.state.orderTotal} kr
             </p>
-            <button onClick={() => this.setState({ showPaymentform: true })}>
+            <button onClick={() => this.setState({ showPaymentForm: true })}>
               Confirm!
             </button>
-            {this.state.showPaymentform && (
+            {this.state.showPaymentForm && (
               <div id="payment-form">
-                <PaymentForm />
+                <Elements>
+                  <PaymentForm
+                    orderDetails={this.state.orderDetails}
+                    finalizeOrder={this.finalizeOrder.bind(this)}
+                  />
+                </Elements>
               </div>
             )}
           </>

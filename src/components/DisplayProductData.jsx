@@ -17,15 +17,13 @@ class DisplayProductData extends Component {
     this.setState({ productData: result.data.products });
   }
 
-  async addToOrder(event) {
+  addToOrder = async (event) => {
     let id = event.target.parentElement.dataset.id;
     let result = await axios.post("http://localhost:3000/api/orders", {
       id: id,
     });
     this.setState({ message: { id: id, message: result.data.message } });
-
-    debugger;
-  }
+  };
 
   render() {
     let dataIndex;
@@ -41,9 +39,10 @@ class DisplayProductData extends Component {
                 {item.name}
                 {item.description}
                 {item.price}
-                <button onClick={this.addToOrder.bind(this)}>
+                <button onClick={this.addToOrder}>
                   Add to order
                 </button>
+
                 <p className="message">{this.state.message.message}</p>
               </div>
             );

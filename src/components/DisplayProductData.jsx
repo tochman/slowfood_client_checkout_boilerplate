@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import { getData } from "../modules/productData";
 import axios from "axios";
+import { SearchResults } from "semantic-ui-react";
 
 class DisplayProductData extends Component {
   state = {
     productData: [],
     message: {},
+    orderId: "",
   };
 
   componentDidMount() {
@@ -19,10 +21,21 @@ class DisplayProductData extends Component {
 
   addToOrder = async (event) => {
     let id = event.target.parentElement.dataset.id;
-    let result = await axios.post("http://localhost:3000/api/orders", {
-      id: id,
+    let result;
+    if (this.state.orderId !== "") {
+      result = await axios.put(
+        `http://localhost:3000/api/orders/${this.state.orderId}`,
+        { product_id: id }
+      );
+    } else {
+      result = await axios.post("http://localhost:3000/api/orders", {
+        product_id: id,
+      });
+    }
+    this.setState({
+      message: { id: id, message: result.data.message },
+      orderId: result.data.order_id,
     });
-    this.setState({ message: { id: id, message: result.data.message } });
   };
 
   render() {
@@ -39,9 +52,7 @@ class DisplayProductData extends Component {
                 {item.name}
                 {item.description}
                 {item.price}
-                <button onClick={this.addToOrder}>
-                  Add to order
-                </button>
+                <button onClick={this.addToOrder}>Add to order</button>
 
                 <p className="message">{this.state.message.message}</p>
               </div>
@@ -51,7 +62,12 @@ class DisplayProductData extends Component {
       );
     }
 
-    return <div>{dataIndex}</div>;
+    return (
+      <>
+        {this.state.orderId !== "" && <button>View order</button>}
+        {dataIndex}
+      </>
+    );
   }
 }
 

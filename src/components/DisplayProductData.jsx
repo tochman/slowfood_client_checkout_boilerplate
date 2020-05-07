@@ -8,6 +8,7 @@ class DisplayProductData extends Component {
     productData: [],
     message: {},
     orderId: "",
+    showOrder: false,
   };
 
   componentDidMount() {
@@ -64,7 +65,22 @@ class DisplayProductData extends Component {
 
     return (
       <>
-        {this.state.orderId !== "" && <button>View order</button>}
+        {this.state.orderId !== "" && (
+          <button
+            onClick={() => {
+              this.setState({ showOrder: true });
+            }}
+          >
+            View order
+          </button>
+        )}
+
+        {this.state.showOrder && (
+          <ul id="details">
+            <li>Item 1</li>
+            <li>Item 2</li>
+          </ul>
+        )}
         {dataIndex}
       </>
     );

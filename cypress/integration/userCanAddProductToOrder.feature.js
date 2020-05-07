@@ -42,5 +42,9 @@ describe("User can add a product to their order", () => {
         "A product has been added to your order"
       );
     });
+    cy.get("button").contains("View order").click();
+    cy.get("#order-details").within(() => {
+      cy.get("li").should("have.length", 2);
+    });
   });
 });

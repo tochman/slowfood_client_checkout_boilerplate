@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import { getData } from "../modules/productData";
 import axios from "axios";
-import { SearchResults } from "semantic-ui-react";
 
 class DisplayProductData extends Component {
   state = {
     productData: [],
     message: {},
-    orderId: "",
+    orderDetails: {},
     showOrder: false,
   };
 
@@ -23,9 +22,9 @@ class DisplayProductData extends Component {
   addToOrder = async (event) => {
     let id = event.target.parentElement.dataset.id;
     let result;
-    if (this.state.orderId !== "") {
+    if (this.state.orderDetails.hasOwnProperty("id")) {
       result = await axios.put(
-        `http://localhost:3000/api/orders/${this.state.orderId}`,
+        `http://localhost:3000/api/orders/${this.state.orderDetails.id}`,
         { product_id: id }
       );
     } else {
@@ -35,12 +34,12 @@ class DisplayProductData extends Component {
     }
     this.setState({
       message: { id: id, message: result.data.message },
-      orderId: result.data.order_id,
+      orderDetails: result.data.order_details.order,
     });
   };
 
   render() {
-    let dataIndex;
+    let dataIndex, orderDetailsDisplay;
     if (
       Array.isArray(this.state.productData) &&
       this.state.productData.length
@@ -49,13 +48,17 @@ class DisplayProductData extends Component {
         <div id="index">
           {this.state.productData.map((item) => {
             return (
-              <div key={item.id} id={`product-${item.id}`}>
-                {item.name}
-                {item.description}
-                {item.price}
+              <div
+                key={item.id}
+                id={`product-${item.id}`}
+                data-id={item.id}
+                data-price={item.price}
+              >
+                {`${item.name} ${item.description} ${item.price}`}
                 <button onClick={this.addToOrder}>Add to order</button>
-
-                <p className="message">{this.state.message.message}</p>
+                {parseInt(this.state.message.id) === item.id && (
+                  <p className="message">{this.state.message.message}</p>
+                )}
               </div>
             );
           })}
@@ -63,12 +66,21 @@ class DisplayProductData extends Component {
       );
     }
 
+
+    if (this.state.orderDetails.hasOwnProperty("products")) {
+      orderDetailsDisplay = this.state.orderDetails.products.map((item) => {
+        return <li key={item.name}>{item.name}</li>;
+      });
+    } else {
+      orderDetailsDisplay = "No products has been added";
+    }
+
     return (
       <>
-        {this.state.orderId !== "" && (
+        {this.state.orderDetails.hasOwnProperty("products") && (
           <button
             onClick={() => {
-              this.setState({ showOrder: true });
+              this.setState({ showOrder: !this.state.showOrder });
             }}
           >
             View order
@@ -76,10 +88,7 @@ class DisplayProductData extends Component {
         )}
 
         {this.state.showOrder && (
-          <ul id="details">
-            <li>Item 1</li>
-            <li>Item 2</li>
-          </ul>
+          <ul id="order-details">{orderDetailsDisplay}</ul>
         )}
         {dataIndex}
       </>

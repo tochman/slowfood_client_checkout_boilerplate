@@ -1,0 +1,18 @@
+{
+  "message": "The product has been added to your order",
+  "order_details": {
+    "order": {
+      "id": 1,
+      "products": [
+        {
+          "name": "Pizza",
+          "price": 120.0
+        },
+         {
+          "name": "Falafel",
+          "price": 95.0
+        }
+      ]
+    }
+  }
+}

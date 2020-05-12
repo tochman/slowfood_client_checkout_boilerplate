@@ -4,14 +4,14 @@
     "order": {
       "id": 1,
       "products": [
-        {
-          "name": "Pizza",
-          "price": 120.0
-        },
-         {
-          "name": "Falafel",
-          "price": 95.0
-        }
+        { "amount": 1,
+           "name": "Pizza", 
+           "price": 120.0 
+          },
+        { 
+          "amount": 1, 
+          "name": "Falafel", 
+          "price": 95.0 }
       ]
     }
   }

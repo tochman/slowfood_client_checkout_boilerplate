@@ -5,6 +5,7 @@
       "id": 1,
       "products": [
         {
+          "amount": 1,
           "name": "Pizza",
           "price": 120.0
         }

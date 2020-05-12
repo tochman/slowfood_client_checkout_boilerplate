@@ -23,7 +23,7 @@ describe("User can add a product to their order", () => {
 
   it("user gets a confimation message when adding a product to order", () => {
     cy.get("button").contains("View order").should("not.exist");
-    
+
     cy.get("#product-2").within(() => {
       cy.get("button").contains("Add to order").click();
       cy.get(".message").should(
@@ -45,9 +45,14 @@ describe("User can add a product to their order", () => {
     cy.get("button").contains("View order").click();
 
     cy.get("#order-details").within(() => {
-      cy.get("li").should("have.length", 2);
+      cy.get("li")
+        .should("have.length", 2)
+        .first()
+        .should("have.text", "1 x Pizza")
+        .next()
+        .should("have.text", "1 x Falafel");
     });
-    
+
     cy.get("button").contains("View order").click();
 
     cy.get("#order-details").should("not.exist");

@@ -69,7 +69,7 @@ class DisplayProductData extends Component {
 
     if (this.state.orderDetails.hasOwnProperty("products")) {
       orderDetailsDisplay = this.state.orderDetails.products.map((item) => {
-        return <li key={item.name}>{item.name}</li>;
+        return <li key={item.name}>{`${item.amount} x ${item.name}`}</li>;
       });
     } else {
       orderDetailsDisplay = "No products has been added";

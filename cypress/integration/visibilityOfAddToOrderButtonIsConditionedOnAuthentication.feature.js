@@ -43,6 +43,5 @@ describe('Add to Order button', () => {
         cy.get('button').should('be.visible')
       })
     });
-
   });
 });

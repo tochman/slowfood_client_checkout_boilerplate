@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { getData } from '../modules/productData';
-import axios from 'axios'
 
 class DisplayProductData extends Component {
   state = {
@@ -16,11 +15,16 @@ class DisplayProductData extends Component {
     this.setState({ productData: result.data.products })
   }
 
-  async addToOrder(event) {
-    let productID = parseInt(event.target.dataset.product)
-    debugger
-    let response = await axios.post('http://localhost:3000/orders', {product_id: productID})
-  }
+  // async addToOrder(event) {
+  //   let productID = parseInt(event.target.dataset.product)
+  //   let headers = JSON.parse(localStorage.getItem('credentials')) // RED FLAG
+  //   let response = await axios.post(
+  //     'http://localhost:3000/orders',
+  //     { product_id: productID },
+  //     { headers: headers }
+  //   )
+
+  // }
 
   render() {
     let dataIndex
@@ -34,7 +38,7 @@ class DisplayProductData extends Component {
                 { localStorage.getItem('authenticated') === 'true' &&
                   <button
                     data-product={item.id}
-                    onClick={(event)=> this.addToOrder(event)}
+                    onClick={(event) => this.props.addToOrder(event)}
                   >
                     Add to Order
                   </button>

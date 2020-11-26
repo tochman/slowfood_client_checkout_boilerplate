@@ -23,7 +23,6 @@ class App extends Component {
       { headers: headers }
     )
     this.setState({ message: response.data.message })
-    debugger
     let count = response.data.order.items.length
     this.setState({ orderItemsCount: count})
   }

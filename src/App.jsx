@@ -7,7 +7,8 @@ class App extends Component {
   state = {
     authenticated: false,
     message: null,
-    orderItemsCount: null
+    orderItemsCount: null,
+    order: {}
   }
 
   toggleAuthenticatedState() {
@@ -17,14 +18,23 @@ class App extends Component {
   async addToOrder(event) {
     let productID = parseInt(event.target.dataset.product)
     let headers = JSON.parse(localStorage.getItem('credentials')) // RED FLAG
-    let response = await axios.post(
-      'http://localhost:3000/orders',
-      { product_id: productID },
-      { headers: headers }
-    )
+    let response
+    if (this.state.order.hasOwnProperty('id')) {
+      response = await axios.put(
+        `http://localhost:3000/api/orders/${this.state.order.id}`,
+        { product_id: productID },
+        { headers: headers }
+      )
+    } else {
+      response = await axios.post(
+        'http://localhost:3000/api/orders',
+        { product_id: productID },
+        { headers: headers }
+      )
+    }
     this.setState({ message: response.data.message })
     let count = response.data.order.items.length
-    this.setState({ orderItemsCount: count})
+    this.setState({ orderItemsCount: count, order: response.data.order })
   }
 
   render() {

@@ -21,7 +21,7 @@ describe('Adding a product to an order', () => {
 
     cy.route({
       method: 'POST',
-      url: 'http://localhost:3000/orders',
+      url: 'http://localhost:3000/api/orders',
       response: 'fixture:first_product_added_to_order.json'
     })
     cy.visit('/')

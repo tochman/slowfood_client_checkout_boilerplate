@@ -17,7 +17,7 @@ describe('user views menus', () => {
     it('successfully', () => {
       cy.get('#index').within(() => {
         cy.contains('Spaghetti and Meatballs')
-        cy.contains('Salad')
+        cy.contains('Pizza')
         cy.contains('Ice Cream')
       })
     })

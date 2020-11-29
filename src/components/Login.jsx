@@ -17,8 +17,9 @@ class Login extends Component {
     const userData = {
       uid: response.headers.uid,
       client: response.headers.client,
-      token_type: response.headers.token_type,
-      expiry: response.headers.expiry
+      'token-type': response.headers['token-type'],
+      expiry: response.headers.expiry,
+      'access-token': response.headers['access-token']
     }
     localStorage.setItem("credentials", JSON.stringify(userData))
     localStorage.setItem("authenticated", true)

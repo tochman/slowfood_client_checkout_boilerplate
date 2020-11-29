@@ -22,7 +22,7 @@ class App extends Component {
     let headers = JSON.parse(localStorage.getItem('credentials')) // RED FLAG
     let response = await axios.put(
       `http://localhost:3000/api/orders/${this.state.order.id}`,
-      { action: 'confirm' },
+      { status: 'confirmed' },
       { headers: headers }
     )
     this.setState({

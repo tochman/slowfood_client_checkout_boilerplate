@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import DisplayProductData from './components/DisplayProductData';
 import Login from './components/Login'
+import OrderDetails from './components/OrderDetails'
 import axios from 'axios'
 
 class App extends Component {
@@ -8,7 +9,8 @@ class App extends Component {
     authenticated: false,
     message: null,
     orderItemsCount: null,
-    order: {}
+    order: {},
+    viewOrderDetails: false
   }
 
   toggleAuthenticatedState() {
@@ -44,6 +46,14 @@ class App extends Component {
         <h1>Slowfood</h1>
         { this.state.message && <h2 data-cy="message">{this.state.message}</h2>}
         { this.state.orderItemsCount && <h3 data-cy="order-items-count">You have {this.state.orderItemsCount} item in your order</h3>}
+        { this.state.order.hasOwnProperty('id') &&
+          <button
+            onClick={() => this.setState({ viewOrderDetails: !this.state.viewOrderDetails })}
+          >
+            View order
+            </button>
+        }
+        { this.state.viewOrderDetails && <OrderDetails order={this.state.order} />}
         <DisplayProductData addToOrder={(event) => this.addToOrder(event)} />
       </>
     )

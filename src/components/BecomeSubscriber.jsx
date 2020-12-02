@@ -1,4 +1,10 @@
 import React, { Component } from "react";
+import {
+  CardCVCElement,
+  CardExpiryElement,
+  CardNumberElement,
+  injectStripe,
+} from "react-stripe-elements";
 
 class BecomeSubscriber extends Component {
   state = {
@@ -9,7 +15,18 @@ class BecomeSubscriber extends Component {
       <div>
         {this.state.toggleForm ? (
           <form data-cy="payment-form">
-            <div>GIVE ME ALL YOUR MONEY!</div>
+            <div data-cy="card-number">
+              <label>Card Number</label>
+              <CardNumberElement />
+            </div>
+            <div data-cy="card-expiry">
+              <label>Expiry Date</label>
+              <CardExpiryElement />
+            </div>
+            <div data-cy="card-cvc">
+              <label>CVC number</label>
+              <CardCVCElement />
+            </div>
           </form>
         ) : (
           <button
@@ -23,4 +40,4 @@ class BecomeSubscriber extends Component {
     );
   }
 }
-export default BecomeSubscriber;
+export default injectStripe(BecomeSubscriber);

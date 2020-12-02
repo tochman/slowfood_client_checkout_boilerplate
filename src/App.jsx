@@ -3,7 +3,8 @@ import DisplayProductData from "./components/DisplayProductData";
 import Login from "./components/Login";
 import OrderDetails from "./components/OrderDetails";
 import axios from "axios";
-import BecomeSubscriber from './components/BecomeSubscriber'
+import BecomeSubscriber from "./components/BecomeSubscriber";
+import { Elements } from "react-stripe-elements";
 
 class App extends Component {
   state = {
@@ -44,7 +45,9 @@ class App extends Component {
     return (
       <>
         {this.state.authenticated ? (
-          <BecomeSubscriber />
+          <Elements>
+            <BecomeSubscriber />
+          </Elements>
         ) : (
           <Login
             toggleAuthenticatedState={() => this.toggleAuthenticatedState()}

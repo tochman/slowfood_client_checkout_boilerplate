@@ -22,7 +22,7 @@ describe("User can become subscriber", () => {
       cy.route({
         method: "POST",
         url: "http://localhost:3000/api/subscriptions",
-        reponse: "fixture:stripe_response.json"
+        response: "fixture:stripe_response.json"
       });
       cy.visit("/");
       cy.get('[data-cy="register-cta"]').click();
@@ -40,7 +40,7 @@ describe("User can become subscriber", () => {
       cy.get('[data-cy="payment-form"]').within(() => {
         cy.get('[data-cy="card-number"]').within(() => {
           cy.wait(1000);
-          cy.get('iframe[(name^="__privateStripeFrame")]').then(($iframe) => {
+          cy.get('iframe[name^="__privateStripeFrame"]').then(($iframe) => {
             const $body = $iframe.contents().find("body");
             cy.wrap($body)
               .find('input[name="cardnumber"]')

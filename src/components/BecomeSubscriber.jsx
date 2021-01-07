@@ -8,6 +8,16 @@ import {
 import axios from "axios";
 
 class BecomeSubscriber extends Component {
+
+  // constructor(props) {
+  //   super(props)
+
+  //   this.state = {
+  //     toggleForm: false,
+  //     message: ''
+  //   }
+  // }
+
   state = {
     toggleForm: false,
     message: ''
@@ -36,33 +46,33 @@ class BecomeSubscriber extends Component {
         {this.state.message ? (
           <p data-cy="payment-message">{this.state.message}</p>
         ) : (
-          <>
-            {this.state.toggleForm ? (
-              <form data-cy="payment-form" onSubmit={this.payWithStripe}>
-                <div data-cy="card-number">
-                  <label>Card Number</label>
-                  <CardNumberElement />
-                </div>
-                <div data-cy="card-expiry">
-                  <label>Expiry Date</label>
-                  <CardExpiryElement />
-                </div>
-                <div data-cy="card-cvc">
-                  <label>CVC number</label>
-                  <CardCVCElement />
-                </div>
-                <button>Confirm Payment</button>
-              </form>
-            ) : (
-              <button
-                data-cy="become-subscriber"
-                onClick={() => this.setState({ toggleForm: true })}
-              >
-                Become Subscriber
-              </button>
-            )}
-          </>
-        )}
+            <>
+              {this.state.toggleForm ? (
+                <form data-cy="payment-form" onSubmit={this.payWithStripe}>
+                  <div data-cy="card-number">
+                    <label>Card Number</label>
+                    <CardNumberElement />
+                  </div>
+                  <div data-cy="card-expiry">
+                    <label>Expiry Date</label>
+                    <CardExpiryElement />
+                  </div>
+                  <div data-cy="card-cvc">
+                    <label>CVC number</label>
+                    <CardCVCElement />
+                  </div>
+                  <button>Confirm Payment</button>
+                </form>
+              ) : (
+                  <button
+                    data-cy="become-subscriber"
+                    onClick={() => this.setState({ toggleForm: true })}
+                  >
+                    Become Subscriber
+                  </button>
+                )}
+            </>
+          )}
       </div>
     );
   }

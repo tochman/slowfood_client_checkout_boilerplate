@@ -36,7 +36,7 @@ describe("User can become subscriber", () => {
       cy.get('[data-cy="become-subscriber"]').click();
       //cy.get('[data-cy="payment-form"]').should('exist')
 
-      
+
       cy.get('[data-cy="payment-form"]').within(() => {
         cy.get('[data-cy="card-number"]').within(() => {
           cy.wait(1000);

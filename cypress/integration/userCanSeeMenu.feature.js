@@ -30,7 +30,7 @@ describe('user views menus', () => {
       cy.route({
         method: 'GET',
         url: 'http://localhost:3000/api/products',
-        response: []
+        response: { "products": [] }
       })
     })
 
